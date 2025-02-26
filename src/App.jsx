@@ -100,7 +100,7 @@ function App() {
           </div>
         ) : (
           <div className="flex flex-col md:grid md:grid-cols-5 lg:grid-cols-3 xl:grid-cols-4 h-screen">
-            <div className="relative bg-white shadow-lg rounded-b-3xl md:rounded-3xl transition-all duration-300 ease-in-out md:col-span-3 lg:col-span-2 xl:col-span-3 h-[55vh] md:h-full">
+            <div className="relative bg-white shadow-lg transition-all duration-300 ease-in-out md:col-span-3 lg:col-span-2 xl:col-span-3 h-[55vh] md:h-full">
               <div className="absolute left-6 bottom-6 z-20 md:hidden">
                 <FullScreenButton />
               </div>
@@ -119,8 +119,10 @@ function App() {
                 <CameraControl />
               </Canvas>
             </div>
-            <div className="h-[45vh] md:h-full bg-white md:col-span-2 lg:col-span-1 xl:col-span-1 md:border-l border-gray-200 overflow-hidden">
-              <Menu device={device} setShowQRCode={setShowQRCode} />
+            <div className="h-[45vh] overflow-auto md:h-full flex-grow bg-white md:col-span-2 lg:col-span-1 xl:col-span-1 md:border-l border-gray-200">
+              <div className="h-full overflow-auto">
+                <Menu device={device} setShowQRCode={setShowQRCode} />
+              </div>
             </div>
           </div>
         )}

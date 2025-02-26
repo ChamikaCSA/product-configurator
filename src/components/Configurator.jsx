@@ -1,8 +1,9 @@
 import { useGLTF, useTexture } from '@react-three/drei';
-import React from 'react';
-import { OrbitControls } from '@react-three/drei';
+import React, { useRef } from 'react';
 import { useEquirectangularHDR } from '../utils/SkyBox';
 import { GLTFLoader } from 'three/addons';
+import * as THREE from 'three';
+import { CameraControl } from './CameraControl';
 
 const gltfLoader = new GLTFLoader();
 import ao from '../assets/ao.png';
@@ -17,15 +18,25 @@ const Configurator = () => {
     const { nodes, animations, materials } = useGLTF(singer ? '/OneSeater.glb' : singerThree ? '/ThreeSeater.glb' : '/chair_citizen.glb', gltfLoader);
     const skybox = useEquirectangularHDR();
 
-    const aoMap = useTexture(aoPath);
-    aoMap.flipY = false;
+    const aoTexture = useTexture(aoPath);
+    aoTexture.flipY = false;
+    aoTexture.colorSpace = THREE.NoColorSpace;
 
     for (const key in materials) {
         const material = materials[key];
 
         if (material) {
             material.envMap = skybox;
-           if(!singer && !singerThree) {material.aoMap = aoMap;};
+            material.envMapIntensity = 1.2;
+
+            if(!singer && !singerThree) {
+                // material.aoMap = aoTexture;
+                // material.aoMapIntensity = 1;
+            }
+
+            if (material.map) {
+                material.map.colorSpace = THREE.SRGBColorSpace;
+            }
         }
     }
 
@@ -35,11 +46,11 @@ const Configurator = () => {
     }
 
     return (
-        <group>
+        <group position={[0, -0.4, 0]}>
             <ambientLight />
             <directionalLight position={[3.4, 7.27, 8.34]} intensity={0.05} />
             <ConfigurableObject nodes={nodes} materials={materials} />
-            <OrbitControls enablePan={false} minDistance={2} maxDistance={10} />
+            <CameraControl />
         </group>
     );
 };

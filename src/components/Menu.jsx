@@ -4,7 +4,7 @@ import { ColorComponent } from "../components/ColorComponent";
 import { useState, useEffect } from "react";
 import icon from "../assets/icon.png";
 import arrow from "../assets/arrow.png";
-import { Listbox } from "@headlessui/react";
+import { Listbox, Transition } from "@headlessui/react";
 import { ARButton } from "../components/ARButton";
 
 const pathname = window.location.pathname;
@@ -17,35 +17,45 @@ const title = singer ? 'Triton Sofa Single Seater' : singerThree ? 'Triton Sofa 
 const subtitle = singer ? 'Model No: WF-TRITON-01-1S' : singerThree ? 'Model No: WF-TRITON-03-3S' : 'Konstantin Grcic, 2020';
 
 function SingerDescription(props) {
-  return (<div
-    className={`${props.showDescription ? "" : "hidden md:block"
+  return (
+    <div
+      className={`overflow-hidden transition-all duration-300 ease-in-out ${
+        props.showDescription
+          ? 'max-h-80 opacity-100'
+          : 'max-h-0 opacity-0 md:max-h-80 md:opacity-100'
       }`}
-  >
-    <div className="grid grid-cols-3 gap-y-2">
-      <div><p className="leading-5 font-popp text-xs font-medium md:text-sm md:font-medium">Upholstery</p></div>
-      <div className="col-span-2"><p className="leading-5 font-popp text-xs font-light md:text-sm md:font-light">Fabric</p></div>
-      <div><p className="leading-5 font-popp text-xs font-medium md:text-sm md:font-medium">Material</p></div>
-      <div className="col-span-2"><p className="leading-5 font-popp text-xs font-light md:text-sm md:font-light">{`Treated Rubber & Engineered Wood, PU Cushion, Polyfiber, Fabric`}</p></div>
-      <div><p className="leading-5 font-popp text-xs font-medium md:text-sm md:font-medium">Sofa Frame</p></div>
-      <div className="col-span-2"><p className="leading-5 font-popp text-xs font-light md:text-sm md:font-light">{`Treated Rubber & Engineered Wood`}</p></div>
+    >
+      <div className="grid grid-cols-3 gap-y-2 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
+        <div><p className="leading-tight font-popp text-xs font-medium text-blue-700">Upholstery</p></div>
+        <div className="col-span-2"><p className="leading-tight font-popp text-xs font-light">Fabric</p></div>
+        <div><p className="leading-tight font-popp text-xs font-medium text-blue-700">Material</p></div>
+        <div className="col-span-2"><p className="leading-tight font-popp text-xs font-light">{`Treated Rubber & Engineered Wood, PU Cushion, Polyfiber, Fabric`}</p></div>
+        <div><p className="leading-tight font-popp text-xs font-medium text-blue-700">Sofa Frame</p></div>
+        <div className="col-span-2"><p className="leading-tight font-popp text-xs font-light">{`Treated Rubber & Engineered Wood`}</p></div>
+      </div>
     </div>
-  </div>);
+  );
 }
 
 function SingerThreeDescription(props) {
-  return (<div
-    className={`${props.showDescription ? "" : "hidden md:block"
+  return (
+    <div
+      className={`overflow-hidden transition-all duration-300 ease-in-out ${
+        props.showDescription
+          ? 'max-h-80 opacity-100'
+          : 'max-h-0 opacity-0 md:max-h-80 md:opacity-100'
       }`}
-  >
-    <div className="grid grid-cols-3 gap-y-2">
-      <div><p className="leading-5 font-popp text-xs font-medium md:text-sm md:font-medium">Upholstery</p></div>
-      <div className="col-span-2"><p className="leading-5 font-popp text-xs font-light md:text-sm md:font-light">Fabric</p></div>
-      <div><p className="leading-5 font-popp text-xs font-medium md:text-sm md:font-medium">Material</p></div>
-      <div className="col-span-2"><p className="leading-5 font-popp text-xs font-light md:text-sm md:font-light">{`Treated Rubber & Engineered Wood, PU Cushion, Polyfiber, Fabric`}</p></div>
-      <div><p className="leading-5 font-popp text-xs font-medium md:text-sm md:font-medium">Sofa Frame</p></div>
-      <div className="col-span-2"><p className="leading-5 font-popp text-xs font-light md:text-sm md:font-light">{`Treated Rubber & Engineered Wood`}</p></div>
+    >
+      <div className="grid grid-cols-3 gap-y-2 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
+        <div><p className="leading-tight font-popp text-xs font-medium text-blue-700">Upholstery</p></div>
+        <div className="col-span-2"><p className="leading-tight font-popp text-xs font-light">Fabric</p></div>
+        <div><p className="leading-tight font-popp text-xs font-medium text-blue-700">Material</p></div>
+        <div className="col-span-2"><p className="leading-tight font-popp text-xs font-light">{`Treated Rubber & Engineered Wood, PU Cushion, Polyfiber, Fabric`}</p></div>
+        <div><p className="leading-tight font-popp text-xs font-medium text-blue-700">Sofa Frame</p></div>
+        <div className="col-span-2"><p className="leading-tight font-popp text-xs font-light">{`Treated Rubber & Engineered Wood`}</p></div>
+      </div>
     </div>
-  </div>);
+  );
 }
 
 const Menu = ({ device, setShowQRCode }) => {
@@ -91,15 +101,27 @@ const Menu = ({ device, setShowQRCode }) => {
   };
 
   const descriptionChangeHandler = () => {
-    return singer ? <SingerDescription showDescription={showDescription} /> : singerThree ? <SingerThreeDescription showDescription={showDescription} /> : <p
-      className={`leading-5 font-popp text-xs font-light md:text-sm md:font-light ${showDescription ? "" : "hidden md:block"
+    if (singer) return <SingerDescription showDescription={showDescription} />;
+    if (singerThree) return <SingerThreeDescription showDescription={showDescription} />;
+
+    return (
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          showDescription
+            ? 'max-h-96 opacity-100'
+            : 'max-h-0 opacity-0 md:max-h-96 md:opacity-100'
         }`}
-    >
-      The Citizen armchair combines an unconventional design with a new
-      way of sitting: the seat is suspended on three cables, enabling a
-      pleasant swinging movement and a unique dynamic experience for the
-      sitter.
-  </p>
+      >
+        <div className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
+          <p className="leading-tight font-popp text-xs font-light text-gray-700">
+            The Citizen armchair combines an unconventional design with a new
+            way of sitting: the seat is suspended on three cables, enabling a
+            pleasant swinging movement and a unique dynamic experience for the
+            sitter.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   const chairtype = data.types[selectedObject.typeId];
@@ -125,9 +147,13 @@ const Menu = ({ device, setShowQRCode }) => {
     }
 
     return (
-      <div className="mt-9" key={index_mesh}>
-        <div>
-          <p className="font-popp text-sm font-medium leading-5 md:text-base md:font-medium">
+      <div
+        className={`mt-3 bg-white rounded-lg p-3 shadow-sm animate-fadeIn`}
+        style={{animationDelay: `${index_mesh * 100}ms`}}
+        key={index_mesh}
+      >
+        <div className="border-l-4 border-blue-500 pl-2">
+          <p className="font-popp text-xs font-medium leading-tight">
             {display_name}
           </p>
         </div>
@@ -175,92 +201,141 @@ const Menu = ({ device, setShowQRCode }) => {
   };
 
   return (
-    <>
-      <div>
-        <div className="px-6">
-          <div className="pt-4 flex justify-between items-center">
-            <h1 className="leading-8 font-popp text-lg font-bold md:text-3xl md:font-semibold md:leading-10">
-              {title}
-            </h1>
+    <div
+      className="bg-white rounded-xl shadow-lg h-full flex flex-col animate-slideUp"
+    >
+      <div className="px-4 pt-3 pb-1 sticky top-0 bg-white z-10">
+        <div className="flex justify-between items-center">
+          <h1
+            className="leading-7 font-popp text-lg font-bold md:text-2xl md:font-semibold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent animate-slideInRight"
+          >
+            {title}
+          </h1>
+          <div
+            className="w-7 h-7 bg-blue-50 rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-100 transition-all duration-200 md:hidden hover:scale-110 active:scale-95"
+            onClick={toggleButtonHandler}
+          >
             <img
-              className={`w-6 h-6 ${showDescription
-                ? "transform rotate-180 duration-300"
-                : "transform duration-300"
-                } md:hidden`}
+              className={`w-3 h-3 transition-transform duration-300 ${showDescription ? 'rotate-180' : ''}`}
               src={icon}
               alt="toggle"
-              onClick={toggleButtonHandler}
             />
           </div>
-          <p className="leading-5 font-popp text-sm font-light md:text-lg md:font-light">
-            {subtitle}
-          </p>
-          <div className="mt-6 mb-4">
-            {descriptionChangeHandler()}
-          </div>
         </div>
+        <p className="leading-tight font-popp text-xs font-light md:text-sm md:font-light text-gray-600">
+          {subtitle}
+        </p>
+        <div className="mt-2 mb-2">
+          {descriptionChangeHandler()}
+        </div>
+      </div>
+
+      <div className="flex-1 overflow-auto">
         <div
-          className={`px-6 border-t-1 border-gray-300 md:border-none transition ease-in-out duration-200 ${showDescription ? "transform translate-y-4" : "translate-y-0"
-            }`}
+          className={`px-4 border-t border-gray-200 md:border-none pt-2 transition ease-in-out duration-200`}
         >
-          <div className={` ${typesLength <= 1 ? 'hidden' : 'mt-5 h-14 w-full shadow-md'}`}>
+          <div className={` ${typesLength <= 1 ? 'hidden' : 'mt-1 w-full'}`}>
             <Listbox
               as="div"
               className="relative"
               value={selectedChair}
               onChange={setSelectedChair}
             >
-              <Listbox.Button className="w-full h-14 flex items-center justify-between rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <div className="flex items-center">
-                  <img
-                    className="w-10 h-10 mx-4"
-                    src={selectedChair.img}
-                    alt={selectedChair.name}
-                  />
-                  <span>{selectedChair.name}</span>
-                </div>
-                <span className="pointer-events-none mr-5">
-                  <img className="w-3 h-2" src={arrow} alt="arrow" />
-                </span>
-              </Listbox.Button>
-              <Listbox.Options className="absolute w-full top-0 bg-white focus:outline-none shadow-md cursor-pointer z-10">
-                {data.types.map((person) => (
-                  <Listbox.Option
-                    className="flex items-center focus:outline-none pt-1 pb-3 hover:bg-gray-100"
-                    key={person.id}
-                    value={person}
+              {({ open }) => (
+                <>
+                  <Listbox.Button className="w-full h-12 flex items-center justify-between rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-200 bg-white shadow-sm hover:bg-gray-50 transition-colors duration-200">
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 rounded-lg overflow-hidden mx-2 bg-gray-100 flex items-center justify-center">
+                        <img
+                          className="w-8 h-8 transition-transform duration-200 hover:scale-110"
+                          src={selectedChair.img}
+                          alt={selectedChair.name}
+                        />
+                      </div>
+                      <span className="font-medium text-sm">{selectedChair.name}</span>
+                    </div>
+                    <span
+                      className={`pointer-events-none mr-5 transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
+                    >
+                      <img className="w-3 h-2" src={arrow} alt="arrow" />
+                    </span>
+                  </Listbox.Button>
+                  <Transition
+                    show={open}
+                    enter="transition duration-100 ease-out"
+                    enterFrom="transform scale-95 opacity-0"
+                    enterTo="transform scale-100 opacity-100"
+                    leave="transition duration-75 ease-out"
+                    leaveFrom="transform scale-100 opacity-100"
+                    leaveTo="transform scale-95 opacity-0"
                   >
-                    <img
-                      className="w-10 h-10 mx-4"
-                      src={person.img}
-                      alt={person.name}
-                    />
-                    <span>{person.name}</span>
-                  </Listbox.Option>
-                ))}
-              </Listbox.Options>
+                    <Listbox.Options className="absolute w-full mt-1 bg-white rounded-lg shadow-lg max-h-48 overflow-auto z-10 focus:outline-none py-1">
+                      {data.types.map((person) => (
+                        <Listbox.Option
+                          className={({ active }) =>
+                            `flex items-center cursor-pointer py-1 px-3 ${
+                              active ? 'bg-blue-50 text-blue-700' : 'text-gray-900'
+                            }`
+                          }
+                          key={person.id}
+                          value={person}
+                        >
+                          {({ selected }) => (
+                            <>
+                              <div className="w-10 h-10 rounded-lg overflow-hidden mr-3 bg-gray-100 flex items-center justify-center">
+                                <img
+                                  className="w-8 h-8"
+                                  src={person.img}
+                                  alt={person.name}
+                                />
+                              </div>
+                              <span className={`text-sm ${selected ? 'font-medium' : 'font-normal'}`}>
+                                {person.name}
+                              </span>
+                              {selected && (
+                                <span className="absolute right-4 text-blue-600">
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                    <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="currentColor" />
+                                  </svg>
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
+                </>
+              )}
             </Listbox>
           </div>
         </div>
-        <div className="px-6">{optionCategories}</div>
-        {!(singer || singerThree) && <div className="mt-16 px-6 pb-5">
+        <div className="px-4 space-y-2 pb-4">
+          {optionCategories}
+        </div>
+      </div>
+
+      {!(singer || singerThree) && (
+        <div className="px-4 py-3 border-t border-gray-100 bg-white mt-auto">
           <button
-            className="focus:outline-none w-full h-12 bg-gradient-to-b from-butbluegrad1 to-butbluegrad2 rounded-md hover:opacity-95"
+            className="focus:outline-none w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg hover:from-blue-700 hover:to-indigo-700 shadow-md transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
             onClick={GotoStore}
           >
             <div className="flex justify-center items-center">
-              <div>
-                <svg className="w-4 h-4 mx-1 text-white md:w-4 md:h-4 md:mx-1" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fillRule="evenodd" clipRule="evenodd" d="M11.5159 8.04941H14.1454C14.5441 8.04941 14.8573 7.74691 14.8573 7.38213C14.8573 7.00845 14.5441 6.71484 14.1454 6.71484H11.5159C11.1172 6.71484 10.804 7.00845 10.804 7.38213C10.804 7.74691 11.1172 8.04941 11.5159 8.04941ZM17.2677 3.42411C17.8468 3.42411 18.2265 3.61095 18.6062 4.02022C18.9859 4.42949 19.0524 5.0167 18.9669 5.54963L18.0651 11.3861C17.8943 12.5081 16.8691 13.3346 15.6635 13.3346H5.30707C4.04455 13.3346 3.00037 12.428 2.89595 11.2536L2.02263 1.55483L0.589246 1.3235C0.209542 1.26122 -0.0562511 0.914234 0.0101971 0.55835C0.0766453 0.194458 0.446857 -0.0466541 0.836054 0.00761832L3.10004 0.327025C3.42279 0.381297 3.6601 0.629527 3.68858 0.932029L3.86894 2.92498C3.89742 3.21058 4.14423 3.42411 4.44799 3.42411H17.2677ZM5.1561 14.7402C4.35872 14.7402 3.71322 15.3452 3.71322 16.0926C3.71322 16.8311 4.35872 17.4361 5.1561 17.4361C5.94398 17.4361 6.58948 16.8311 6.58948 16.0926C6.58948 15.3452 5.94398 14.7402 5.1561 14.7402ZM15.8333 14.7402C15.0359 14.7402 14.3904 15.3452 14.3904 16.0926C14.3904 16.8311 15.0359 17.4361 15.8333 17.4361C16.6212 17.4361 17.2667 16.8311 17.2667 16.0926C17.2667 15.3452 16.6212 14.7402 15.8333 14.7402Z" fill="white" />
-                </svg>
-              </div>
-              <div className="text-white text-center text-base md:text-xl">Purchase</div>
+              <svg className="w-5 h-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+              <div className="text-white text-center text-sm font-medium">Purchase</div>
             </div>
           </button>
-        </div>}
-        {(singer || singerThree) && <ARButton device={device} color={selectedColor0} setShowQRCode={setShowQRCode} />}
-      </div>
-    </>
+        </div>
+      )}
+      {(singer || singerThree) && (
+        <div className="border-t border-gray-100 bg-white mt-auto">
+          <ARButton device={device} color={selectedColor0} setShowQRCode={setShowQRCode} />
+        </div>
+      )}
+    </div>
   );
 };
 

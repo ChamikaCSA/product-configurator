@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { useStore } from '../store';
 
 export const ARButton = () => {
@@ -63,30 +63,21 @@ export const ARButton = () => {
     };
 
     return (
-        <button
-            onClick={handleARClick}
-            className="group w-full px-4 py-3 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            aria-label="View in Augmented Reality"
-        >
-            <div className="flex items-center justify-center space-x-2">
-                <svg
-                    className="w-6 h-6 text-white/90 group-hover:text-white transition-colors duration-200"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
-                    />
-                </svg>
-                <span className="font-medium text-white group-hover:text-white transition-colors duration-200">
-                    View in AR
-                </span>
-            </div>
-        </button>
+        <div className="mt-8 px-6 pb-6">
+            <button
+                className="focus:outline-none w-full py-4 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg hover:from-purple-700 hover:to-indigo-700 shadow-md transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                onClick={handleARClick}
+            >
+                <div className="flex justify-center items-center">
+                    <div className="mr-2">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 11C21 7.5 19 4.5 16 3L16 19C19 17.5 21 14.5 21 11Z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M16 3C14.4 2.2 12.7 1.8 11 2C6.6 2.5 3 6.5 3 11C3 15.5 6.6 19.5 11 20C12.7 20.2 14.4 19.8 16 19" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                    </div>
+                    <div className="text-white text-center text-base font-medium md:text-xl">View in Augmented Reality</div>
+                </div>
+            </button>
+        </div>
     );
 };

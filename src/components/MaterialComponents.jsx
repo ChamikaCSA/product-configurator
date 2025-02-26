@@ -1,29 +1,29 @@
 import React from "react";
 
 export const MaterialComponents = ({ variety, activeitem, setactive }) => {
-  const toggleActiveStyle = (index) => {
-    if (index.id === activeitem) {
-      return "focus:outline-none w-full h-12 md:h-10 border-solid border-1 text-center text-sm font-normal py-1 px-2 hover:bg-blue-500 hover:border-blue-500 bg-blue-600 border-blue-600 text-white md:text-base md:font-font-normal";
+  const toggleActiveStyle = (item) => {
+    if (item.id === activeitem) {
+      return "focus:outline-none flex-1 h-9 border-0 text-center text-xs font-medium py-1 px-2 bg-blue-600 rounded-md text-white shadow-md transition-colors duration-200";
     } else {
-      return "focus:outline-none w-full h-12 md:h-10 border-solid border-1 text-center text-sm font-normal py-1 px-2 hover:bg-gray-200 hover:border-gray-200 md:text-base md:font-normal";
+      return "focus:outline-none flex-1 h-9 border border-gray-200 text-center text-xs font-normal py-1 px-2 hover:bg-gray-100 rounded-md text-gray-700 transition-colors duration-200";
     }
   };
 
   return (
-    <div className="mt-3 flex justify-center">
-      <div className="inline-flex overflow-hidden rounded-md w-full">
-        {variety.map((item) => {
+    <div className="mt-2">
+      <div className="flex space-x-2 w-full">
+        {variety.map((item, index) => {
           return (
-            <div className="flex-1" key={item.id}>
-              <button
-                className={toggleActiveStyle(item)}
-                onClick={() => {
-                  setactive(item.id);
-                }}
-              >
-                {item.name}
-              </button>
-            </div>
+            <button
+              key={item.id}
+              className={`${toggleActiveStyle(item)} animate-fadeIn transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]`}
+              style={{animationDelay: `${index * 100}ms`}}
+              onClick={() => {
+                setactive(item.id);
+              }}
+            >
+              {item.name}
+            </button>
           );
         })}
       </div>
