@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { WebGLRenderer } from 'three';
 import { Helmet } from 'react-helmet-async';
 import { Configurator } from './components/Configurator';
 import { CameraControl } from './components/CameraControl';
@@ -7,33 +8,35 @@ import { QRCodePopup } from './components/QRCodePopup';
 import { Menu } from './components/Menu';
 import { Loader } from './components/Loader';
 
+const pathname = window.location.pathname;
+const singer = pathname === "/triton-sofa-single-seater";
+const singerThree = pathname === "/triton-sofa-three-seater";
+
+let pageTitle = "3D Product Configurator | OGMO";
+
+if (singer) {
+  window.history.replaceState({}, "", '/triton-sofa-single-seater');
+  pageTitle = "One Seater Configurator | Singer";
+} else if (singerThree) {
+  window.history.replaceState({}, "", '/triton-sofa-three-seater');
+  pageTitle = "Three Seater Configurator | Singer";
+} else {
+  window.history.replaceState({}, "", '/');
+}
+
 function App() {
   const [fullScreen, setFullScreen] = useState(false);
   const [showQRCode, setShowQRCode] = useState(false);
-
-  const toggleFullScreen = () => {
-    const canvasContainer = document.querySelector('.canvas-container');
-    if (!document.fullscreenElement) {
-      canvasContainer.requestFullscreen().then(() => {
-        setFullScreen(true);
-      }).catch((err) => {
-        console.error(`Error attempting to enable fullscreen: ${err.message}`);
-      });
-    } else {
-      document.exitFullscreen().then(() => {
-        setFullScreen(false);
-      }).catch((err) => {
-        console.error(`Error attempting to exit fullscreen: ${err.message}`);
-      });
-    }
-  };
 
   const isIPhoneDevice = /iPhone/g.test(navigator.userAgent);
   const isAndroidDevice = /android/i.test(navigator.userAgent);
   const isIPadDevice = /iPad/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
   const device = isIPhoneDevice ? "iphone" : isAndroidDevice ? "android" : isIPadDevice ? "ipad" : "device";
-  const pageTitle = "OGMO Product Configurator";
+
+  const toggleFullScreen = () => {
+    setFullScreen(!fullScreen);
+  };
 
   const FullScreenButton = () => (
     <button
@@ -48,12 +51,21 @@ function App() {
         viewBox="0 0 24 24"
         stroke="currentColor"
       >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
-        />
+        {fullScreen ? (
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        ) : (
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+          />
+        )}
       </svg>
     </button>
   );
@@ -69,20 +81,15 @@ function App() {
             <QRCodePopup setShowQRCode={setShowQRCode} />
           </div>
         )}
-        <div className="flex flex-col md:grid md:grid-cols-5 lg:grid-cols-3 xl:grid-cols-4 h-screen">
-          <div
-            className={`relative bg-white shadow-lg rounded-b-3xl md:rounded-3xl transition-all duration-300 ease-in-out md:col-span-3 lg:col-span-2 xl:col-span-3 ${fullScreen ? "fixed inset-0 z-40" : "h-[55vh] md:h-full"} canvas-container`}
-          >
-            <div className={`absolute left-6 bottom-6 z-20 md:hidden`}>
-              <FullScreenButton />
-            </div>
-            <div className="absolute top-6 right-6 z-20 hidden md:block">
+        {fullScreen ? (
+          <div className="fixed inset-0 z-40 bg-white">
+            <div className="absolute top-6 right-6 z-50">
               <FullScreenButton />
             </div>
             <Canvas
-              className="h-full"
+              className="h-full w-full"
               style={{ touchAction: "none" }}
-              gl={{ antialias: true, alpha: true }}
+              gl={(props) => new WebGLRenderer({ ...props, antialias: true, alpha: true })}
               dpr={window.devicePixelRatio}
             >
               <Suspense fallback={<Loader />}>
@@ -91,10 +98,32 @@ function App() {
               <CameraControl />
             </Canvas>
           </div>
-          <div className="h-[45vh] md:h-full bg-white md:col-span-2 lg:col-span-1 xl:col-span-1 md:border-l border-gray-200 overflow-hidden transition-all duration-300 ease-in-out">
-            <Menu device={device} setShowQRCode={setShowQRCode} />
+        ) : (
+          <div className="flex flex-col md:grid md:grid-cols-5 lg:grid-cols-3 xl:grid-cols-4 h-screen">
+            <div className="relative bg-white shadow-lg rounded-b-3xl md:rounded-3xl transition-all duration-300 ease-in-out md:col-span-3 lg:col-span-2 xl:col-span-3 h-[55vh] md:h-full">
+              <div className="absolute left-6 bottom-6 z-20 md:hidden">
+                <FullScreenButton />
+              </div>
+              <div className="absolute top-6 right-6 z-20 hidden md:block">
+                <FullScreenButton />
+              </div>
+              <Canvas
+                className="h-full"
+                style={{ touchAction: "none" }}
+                gl={(props) => new WebGLRenderer({ ...props, antialias: true, alpha: true })}
+                dpr={window.devicePixelRatio}
+              >
+                <Suspense fallback={<Loader />}>
+                  <Configurator />
+                </Suspense>
+                <CameraControl />
+              </Canvas>
+            </div>
+            <div className="h-[45vh] md:h-full bg-white md:col-span-2 lg:col-span-1 xl:col-span-1 md:border-l border-gray-200 overflow-hidden">
+              <Menu device={device} setShowQRCode={setShowQRCode} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

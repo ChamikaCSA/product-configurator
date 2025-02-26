@@ -15,23 +15,15 @@ const ConfigurableObject = (props) => {
     const alphaMap = useTexture(alphaPath);
 
     const selectedObject = useStore(state => state.selectedObject);
-    const selectedType = data.types[selectedObject?.typeId || 0];
+    const selectedType = data.types[selectedObject.typeId];
 
     const meshes = selectedType.meshes.map((meshId, index) => {
-        const materialId = index === 0 ? selectedObject?.selectedMaterialId0 : selectedObject?.selectedMaterialId1;
-        const material = materialId !== undefined ? data.materialTypes[materialId] : null;
-        const colorId = index === 0 ? selectedObject?.selectedColorId0 : selectedObject?.selectedColorId1;
-        const color = material?.colors?.[colorId];
 
-        if (!material || !color) return null;
+        const material = (index === 0) ? data.materialTypes[selectedObject.selectedMaterialId0] : data.materialTypes[selectedObject.selectedMaterialId1];
+        const color = (index === 0) ? material.colors[selectedObject.selectedColorId0] : material.colors[selectedObject.selectedColorId1];
 
-        const meshObject = props.nodes[meshId];
-        if (meshObject && props.materials[color]) {
-            meshObject.material = props.materials[color];
-        }
-
-        return <primitive key={`mesh_${meshId}`} object={meshObject} dispose={null} />;
-    }).filter(Boolean);
+        return <primitive material={props.materials[color]} key={"mesh_" + meshId} object={props.nodes[meshId]} dispose={null} />
+    });
 
     props.nodes.floor.material.transparent = true;
     props.nodes.floor.material.map = alphaMap;

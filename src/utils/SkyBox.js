@@ -3,12 +3,14 @@ import * as THREE from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { useThree, useLoader } from '@react-three/fiber'
 
+const rgbeLoader = new RGBELoader();
+
 export const useEquirectangularHDR = () => {
     const { gl } = useThree();
     const pmremGenerator = new THREE.PMREMGenerator(gl);
     pmremGenerator.compileEquirectangularShader();
 
-    const hdrEquirect = useLoader(RGBELoader, sky);
+    const hdrEquirect = useLoader(rgbeLoader, sky);
 
     const hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(hdrEquirect);
     hdrEquirect.dispose();

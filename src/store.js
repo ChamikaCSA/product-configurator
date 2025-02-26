@@ -159,27 +159,28 @@ export const singerData = {
     {
       id: 0,
       name: "Single Seater",
-      meshes: ["single_seater_cushion"],
-      displayNames: ["Seat"],
+      img: "icon/chair_citizen/LowBack.png",
+      meshes: ["single_seater"],
+      displayNames: ["Colors"],
       materialTypes: [[0]],
     },
   ],
   materialTypes: [
     {
       id: 0,
-      name: "Fabric",
-      colors: ["yellow", "gray"],
+      name: "Plano",
+      colors: ["single_seaterMtl", "fabric_1Mtl"],
       clrbtn: [
         {
           id: 0,
-          name: "Yellow",
-          bgimg: "bg-yellow",
+          name: "Gray",
+          bgimg: "bg-oneseatergray",
         },
         {
           id: 1,
-          name: "Gray",
-          bgimg: "bg-gray",
-        },
+          name: "Gold",
+          bgimg: "bg-oneseatergold",
+        }
       ],
     },
   ],
@@ -189,28 +190,29 @@ export const singerThreeData = {
   types: [
     {
       id: 0,
-      name: "Three Seater",
-      meshes: ["three_seater_cushion"],
-      displayNames: ["Seat"],
+      name: "Single Seater",
+      img: "icon/chair_citizen/LowBack.png",
+      meshes: ["single_seater"],
+      displayNames: ["Colors"],
       materialTypes: [[0]],
     },
   ],
   materialTypes: [
     {
       id: 0,
-      name: "Fabric",
-      colors: ["yellow", "gray"],
+      name: "Plano",
+      colors: ["single_seaterMtl", "fabric_1Mtl"],
       clrbtn: [
         {
           id: 0,
-          name: "Yellow",
-          bgimg: "bg-yellow",
+          name: "Gray",
+          bgimg: "bg-oneseatergray",
         },
         {
           id: 1,
-          name: "Gray",
-          bgimg: "bg-gray",
-        },
+          name: "Gold",
+          bgimg: "bg-oneseatergold",
+        }
       ],
     },
   ],
@@ -224,43 +226,64 @@ const useStore = create((set) => ({
     selectedColorId0: 0,
     selectedColorId1: 0,
   },
-  setSelectedObjectType: (typeId) =>
+  setSelectedObjectType: (id) =>
     set((state) => ({
       selectedObject: {
-        ...state.selectedObject,
-        typeId,
+        typeId: id,
+        selectedMaterialId0: state.selectedObject.selectedMaterialId0,
+        selectedMaterialId1: state.selectedObject.selectedMaterialId1,
+        selectedColorId0: state.selectedObject.selectedColorId0,
+        selectedColorId1: state.selectedObject.selectedColorId1,
       },
     })),
   setSelectedMaterial0: (materialId) =>
     set((state) => ({
       selectedObject: {
-        ...state.selectedObject,
+        typeId: state.selectedObject.typeId,
         selectedMaterialId0: materialId,
+        selectedMaterialId1: state.selectedObject.selectedMaterialId1,
         selectedColorId0: 0,
+        selectedColorId1: state.selectedObject.selectedColorId1,
       },
-    }), true),
+    })),
   setSelectedMaterial1: (materialId) =>
     set((state) => ({
       selectedObject: {
-        ...state.selectedObject,
+        typeId: state.selectedObject.typeId,
+        selectedMaterialId0: state.selectedObject.selectedMaterialId0,
         selectedMaterialId1: materialId,
+        selectedColorId0: state.selectedObject.selectedColorId0,
         selectedColorId1: 0,
       },
-    }), true),
+    })),
   setSelectedColor0: (colorId) =>
     set((state) => ({
       selectedObject: {
-        ...state.selectedObject,
+        typeId: state.selectedObject.typeId,
+        selectedMaterialId0: state.selectedObject.selectedMaterialId0,
+        selectedMaterialId1: state.selectedObject.selectedMaterialId1,
         selectedColorId0: colorId,
+        selectedColorId1: state.selectedObject.selectedColorId1,
       },
     })),
   setSelectedColor1: (colorId) =>
     set((state) => ({
       selectedObject: {
-        ...state.selectedObject,
+        typeId: state.selectedObject.typeId,
+        selectedMaterialId0: state.selectedObject.selectedMaterialId0,
+        selectedMaterialId1: state.selectedObject.selectedMaterialId1,
+        selectedColorId0: state.selectedObject.selectedColorId0,
         selectedColorId1: colorId,
       },
     })),
+  // ,
+  // setSelectedObjectName: (id) => set(state => ({
+  //     selectedObject: {
+  //         name: id,
+  //         selectedObjectCenter: state.selectedObject.selectedObjectCenter,
+  //         selectedObjectSize: state.selectedObject.selectedObjectSize
+  //     }
+  // }))
 }));
 
 export { useStore };
