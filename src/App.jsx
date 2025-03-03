@@ -81,51 +81,42 @@ function App() {
             <QRCodePopup setShowQRCode={setShowQRCode} />
           </div>
         )}
-        {fullScreen ? (
-          <div className="fixed inset-0 z-40 bg-white">
-            <div className="absolute top-6 right-6 z-50">
-              <FullScreenButton />
-            </div>
+        <div className={`${fullScreen ? 'fixed inset-0 z-40 bg-white' : 'flex flex-col md:grid md:grid-cols-5 lg:grid-cols-3 xl:grid-cols-4 h-screen'}`}>
+          <div className={`${fullScreen ? 'relative' : 'relative bg-white shadow-lg transition-all duration-300 ease-in-out md:col-span-3 lg:col-span-2 xl:col-span-3 h-[55vh] md:h-full'}`}>
+            {fullScreen ? (
+              <div className="absolute top-6 right-6 z-50">
+                <FullScreenButton />
+              </div>
+            ) : (
+              <>
+                <div className="absolute left-6 bottom-6 z-20 md:hidden">
+                  <FullScreenButton />
+                </div>
+                <div className="absolute top-6 right-6 z-20 hidden md:block">
+                  <FullScreenButton />
+                </div>
+              </>
+            )}
             <Canvas
               className="h-full w-full"
               style={{ touchAction: "none" }}
               gl={(props) => new WebGLRenderer({ ...props, antialias: true, alpha: true })}
               dpr={window.devicePixelRatio}
             >
-              <Suspense fallback={<Loader />}>
+              <Suspense fallback={null}>
                 <Configurator />
               </Suspense>
               <CameraControl />
             </Canvas>
           </div>
-        ) : (
-          <div className="flex flex-col md:grid md:grid-cols-5 lg:grid-cols-3 xl:grid-cols-4 h-screen">
-            <div className="relative bg-white shadow-lg transition-all duration-300 ease-in-out md:col-span-3 lg:col-span-2 xl:col-span-3 h-[55vh] md:h-full">
-              <div className="absolute left-6 bottom-6 z-20 md:hidden">
-                <FullScreenButton />
-              </div>
-              <div className="absolute top-6 right-6 z-20 hidden md:block">
-                <FullScreenButton />
-              </div>
-              <Canvas
-                className="h-full"
-                style={{ touchAction: "none" }}
-                gl={(props) => new WebGLRenderer({ ...props, antialias: true, alpha: true })}
-                dpr={window.devicePixelRatio}
-              >
-                <Suspense fallback={<Loader />}>
-                  <Configurator />
-                </Suspense>
-                <CameraControl />
-              </Canvas>
-            </div>
+          {!fullScreen && (
             <div className="h-[45vh] overflow-auto md:h-full flex-grow bg-white md:col-span-2 lg:col-span-1 xl:col-span-1 md:border-l border-gray-200">
               <div className="h-full overflow-auto">
                 <Menu device={device} setShowQRCode={setShowQRCode} />
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </>
   );
