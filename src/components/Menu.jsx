@@ -315,21 +315,6 @@ const Menu = ({ device, setShowQRCode }) => {
         </div>
       </div>
 
-      {!(singer || singerThree) && (
-        <div className="px-4 py-3 border-t border-gray-100 bg-white mt-auto">
-          <button
-            className="focus:outline-none w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg hover:from-blue-700 hover:to-indigo-700 shadow-md transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-            onClick={GotoStore}
-          >
-            <div className="flex justify-center items-center">
-              <svg className="w-5 h-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
-              <div className="text-white text-center text-sm font-medium">Purchase</div>
-            </div>
-          </button>
-        </div>
-      )}
       {(singer || singerThree) && (
         <div className="border-t border-gray-100 bg-white mt-auto">
           <ARButton device={device} color={selectedColor0} setShowQRCode={setShowQRCode} />
