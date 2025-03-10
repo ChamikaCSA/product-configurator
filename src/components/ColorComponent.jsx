@@ -24,7 +24,7 @@ export const ColorComponent = ({ variety, activeitem, setactive }) => {
                 <div className="p-0 rounded-full scale-95">
                   <button
                     className={`${toggleActiveStyle(item)} transition-transform duration-200 hover:scale-110 active:scale-95`}
-                    style={{ backgroundImage: `url('/src/assets/materials/${item.bgimg}.png')` }}
+                    style={{ backgroundImage: `url(${new URL(`../assets/materials/${item.bgimg}.png`, import.meta.url).href})` }}
                     onClick={() => setactive(item.id)}
                   />
                 </div>
