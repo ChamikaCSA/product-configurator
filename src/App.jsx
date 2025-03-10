@@ -7,10 +7,12 @@ import { CameraControl } from './components/CameraControl';
 import { QRCodePopup } from './components/QRCodePopup';
 import { Menu } from './components/Menu';
 import { Loader } from './components/Loader';
+import { Viewer3D } from './components/Viewer3D';
 
 const pathname = window.location.pathname;
 const singer = pathname === "/triton-sofa-single-seater";
 const singerThree = pathname === "/triton-sofa-three-seater";
+const is3DViewer = pathname === "/3d-viewer";
 
 let pageTitle = "3D Product Configurator | OGMO";
 
@@ -20,6 +22,9 @@ if (singer) {
 } else if (singerThree) {
   window.history.replaceState({}, "", '/triton-sofa-three-seater');
   pageTitle = "Three Seater Configurator | Singer";
+} else if (is3DViewer) {
+  window.history.replaceState({}, "", '/3d-viewer');
+  pageTitle = "3D Viewer | OGMO";
 } else {
   window.history.replaceState({}, "", '/');
 }
@@ -69,6 +74,10 @@ function App() {
       </svg>
     </button>
   );
+
+  if (is3DViewer) {
+    return <Viewer3D />;
+  }
 
   return (
     <>
